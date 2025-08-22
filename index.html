@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoapBox VR Campus Demo Tour</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a0033, #4a0e4e, #0a1428, #2d1b69);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+        
+        .brochure {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #1a0033, #4a0e4e, #0a1428, #2d1b69);
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(255, 20, 147, 0.3);
+            overflow: hidden;
+            position: relative;
+            border: 2px solid rgba(255, 20, 147, 0.3);
+        }
+        
+        .brochure::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 20, 147, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(147, 51, 234, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff1493, #9333ea, #0ea5e9);
+            padding: 50px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                repeating-conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255,255,255,0.03) 1deg, transparent 2deg),
+                repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px);
+            animation: float 30s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .logo {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .main-title {
+            font-size: 3.5em;
+            font-weight: 900;
+            color: #ff1493;
+            margin-bottom: 15px;
+            text-shadow: 
+                0 0 20px rgba(255, 20, 147, 0.8),
+                0 0 40px rgba(255, 20, 147, 0.4),
+                2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: -3px;
+            line-height: 0.9;
+        }
+        
+        .subtitle {
+            font-size: 2em;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+        
+        .tagline {
+            font-size: 1.3em;
+            color: #00ffff;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        
+        .campus-badge {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            padding: 15px 35px;
+            border-radius: 50px;
+            display: inline-block;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: white;
+            border: 2px solid rgba(255, 20, 147, 0.5);
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.3);
+        }
+        
+        .content {
+            padding: 50px 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section {
+            margin-bottom: 45px;
+            position: relative;
+        }
+        
+        .section-number {
+            position: absolute;
+            left: -20px;
+            top: -10px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff1493, #9333ea);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.5);
+            z-index: 2;
+        }
+        
+        .section-title {
+            font-size: 2em;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 20px;
+            margin-left: 50px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2em;
+            color: #ff1493;
+            margin-left: 50px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .description {
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 30px;
+            margin-left: 50px;
+        }
+        
+        .highlight {
+            color: #00ffff;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+            margin-left: 50px;
+        }
+        
+        .benefit-card {
+            background: linear-gradient(135deg, rgba(255, 20, 147, 0.1), rgba(147, 51, 234, 0.1));
+            padding: 25px;
+            border-radius: 20px;
+            text-align: left;
+            border: 2px solid rgba(255, 20, 147, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff1493, #00ffff, #9333ea);
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(255, 20, 147, 0.3);
+            border-color: rgba(255, 20, 147, 0.5);
+        }
+        
+        .benefit-title {
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .benefit-text {
+            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+        
+        .calendar-section {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(255, 20, 147, 0.1));
+            border-radius: 25px;
+            padding: 40px;
+            margin: 40px 0;
+            margin-left: 50px;
+            border: 2px solid rgba(255, 20, 147, 0.3);
+            backdrop-filter: blur(15px);
+        }
+        
+        .calendar-title {
+            text-align: center;
+            font-weight: 900;
+            color: #ff1493;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+        }
+        
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .calendar-header {
+            text-align: center;
+            font-weight: 700;
+            color: #00ffff;
+            padding: 12px 0;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .calendar-day.demo-day {
+            background: linear-gradient(135deg, #ff1493, #9333ea);
+            color: white;
+            font-weight: 800;
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+            animation: glow 2s infinite alternate;
+        }
+        
+        .calendar-day.demo-day::after {
+            content: '🎯';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 14px;
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px rgba(255, 20, 147, 0.6); }
+            100% { box-shadow: 0 0 30px rgba(255, 20, 147, 1); }
+        }
+        
+        .demo-schedule {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 20, 147, 0.2);
+        }
+        
+        .demo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .demo-item:last-child {
+            border-bottom: none;
+        }
+        
+        .demo-date {
+            font-weight: 700;
+            color: white;
+            font-size: 1.1em;
+        }
+        
+        .demo-school {
+            color: #00ffff;
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+        
+        .demo-time {
+            background: linear-gradient(135deg, #ff1493, #9333ea);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.4);
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #ff1493, #9333ea, #0ea5e9);
+            color: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(0, 255, 255, 0.1) 0%, transparent 50%);
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .cta-title {
+            font-size: 2em;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .cta-button {
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            padding: 18px 35px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .cta-button.primary {
+            background: linear-gradient(135deg, #00ffff, #ff1493);
+            border-color: transparent;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .cta-button.primary:hover {
+            background: linear-gradient(135deg, #ff1493, #00ffff);
+            transform: translateY(-3px) scale(1.05);
+        }
+        
+        .special-offer {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(255, 20, 147, 0.2));
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            border: 2px solid #ff1493;
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.3);
+        }
+        
+        .offer-title {
+            color: #ff1493;
+            font-size: 1.8em;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        
+        .offer-text {
+            color: white;
+            font-size: 1.1em;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .value-highlight {
+            color: #00ffff;
+            font-weight: 800;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        
+        .urgency {
+            color: #ff1493;
+            font-weight: 800;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1em;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 20, 147, 0.2);
+        }
+        
+        .logo-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 15px;
+        }
+        
+        .soapbox-logo {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 1.5em;
+            color: white;
+            text-transform: lowercase;
+        }
+        
+        @media (max-width: 768px) {
+            .brochure {
+                margin: 10px;
+            }
+            
+            .main-title {
+                font-size: 2.5em;
+            }
+            
+            .subtitle {
+                font-size: 1.5em;
+            }
+            
+            .header, .content {
+                padding: 30px 20px;
+            }
+            
+            .section-number {
+                position: relative;
+                left: 0;
+                margin-bottom: 15px;
+            }
+            
+            .section-title, .description, .benefits, .calendar-section {
+                margin-left: 0;
+            }
+            
+            .calendar {
+                gap: 8px;
+            }
+            
+            .demo-item {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="brochure">
+        <div class="header">
+            <div class="logo">
+                <div class="main-title">Schedule Your<br>Complimentary<br>Virtual Reality<br>Demo</div>
+                <div class="tagline">Standards-Based Curriculum Meets Celebrity Mentorship —<br><span class="highlight">Learning Has Never Been This Cool!</span></div>
+                <div class="campus-badge">🎓 ON-CAMPUS DEMONSTRATION TOUR</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-number">1</div>
+                <div class="section-title">FREE DEMO PROGRAM</div>
+                <div class="section-subtitle">Experience celebrities/notable personalities from all music genres</div>
+                <div class="description">
+                    Providing your students with <span class="highlight">inspirational life lessons, applicable techniques, mental health support, and advice on overcoming adversity</span> through fully immersive virtual/augmented reality. Watch your students get excited to engage like never before!
+                    <br><br>
+                    <strong>🏫 ON-CAMPUS DEMONSTRATIONS:</strong> We bring the full VR experience directly to your campus. <span class="highlight">Teachers and faculty can sign up for personalized one-on-one sessions</span> during our visit days to explore how VR can transform their specific curriculum.
+                </div>
+                
+                <div class="benefits">
+                    <div class="benefit-card">
+                        <div class="benefit-title">🚀 Enhanced Engagement</div>
+                        <div class="benefit-text">Students get excited to engage like never before with celebrity mentors and immersive experiences</div>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-title">📚 Standards-Based</div>
+                        <div class="benefit-text">Curriculum aligned with educational standards while incorporating inspirational content</div>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-title">💝 Completely FREE</div>
+                        <div class="benefit-text">No cost, no commitment - just experience the revolutionary technology</div>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-title">🎯 Personalized Sessions</div>
+                        <div class="benefit-text">One-on-one demos for faculty to explore curriculum-specific applications</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-number">2</div>
+                <div class="section-title">THE ADVANTAGE</div>
+                <div class="section-subtitle">Interactive lessons and hands-on activities inspire curiosity</div>
+                <div class="description">
+                    Our interactive lessons and hands-on activities inspire <span class="highlight">curiosity, critical thinking, and career exploration</span> across all educational settings—from homeschool to districts to private institutions. Boost engagement, achievement, and retention while differentiating your approach and building your reputation for innovation.
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-number">3</div>
+                <div class="section-title">SPECIAL OFFER</div>
+                <div class="special-offer">
+                    <div class="offer-title">Limited-Time Exclusive</div>
+                    <div class="offer-text">
+                        Reserve your FREE demo today and unlock a <span class="value-highlight">second-year license at no cost (Value: $7,500)</span>. This limited-time offer is exclusively for educational institutions—empowering your children with unique, immersive educational opportunities while you plan for the year ahead.
+                        <div class="urgency">⚡ SLOTS ARE FILLING UP FAST! ⚡</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title" style="margin-left: 0; text-align: center; font-size: 2.5em;">Campus Demo Tour Schedule</div>
+                
+                <div class="calendar-section" style="margin-left: 0;">
+                    <div class="calendar-title">
+                        Starting August 27th, 2025 - Los Angeles Area
+                    </div>
+                    
+                    <div class="calendar">
+                        <div class="calendar-header">Sun</div>
+                        <div class="calendar-header">Mon</div>
+                        <div class="calendar-header">Tue</div>
+                        <div class="calendar-header">Wed</div>
+                        <div class="calendar-header">Thu</div>
+                        <div class="calendar-header">Fri</div>
+                        <div class="calendar-header">Sat</div>
+                        
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day">1</div>
+                        <div class="calendar-day">2</div>
+                        
+                        <div class="calendar-day">3</div>
+                        <div class="calendar-day">4</div>
+                        <div class="calendar-day">5</div>
+                        <div class="calendar-day">6</div>
+                        <div class="calendar-day">7</div>
+                        <div class="calendar-day">8</div>
+                        <div class="calendar-day">9</div>
+                        
+                        <div class="calendar-day">10</div>
+                        <div class="calendar-day">11</div>
+                        <div class="calendar-day">12</div>
+                        <div class="calendar-day">13</div>
+                        <div class="calendar-day">14</div>
+                        <div class="calendar-day">15</div>
+                        <div class="calendar-day">16</div>
+                        
+                        <div class="calendar-day">17</div>
+                        <div class="calendar-day">18</div>
+                        <div class="calendar-day">19</div>
+                        <div class="calendar-day">20</div>
+                        <div class="calendar-day">21</div>
+                        <div class="calendar-day">22</div>
+                        <div class="calendar-day">23</div>
+                        
+                        <div class="calendar-day">24</div>
+                        <div class="calendar-day">25</div>
+                        <div class="calendar-day">26</div>
+                        <div class="calendar-day demo-day">27</div>
+                        <div class="calendar-day">28</div>
+                        <div class="calendar-day">29</div>
+                        <div class="calendar-day">30</div>
+                        
+                        <div class="calendar-day">31</div>
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day empty"></div>
+                        <div class="calendar-day empty"></div>
+                    </div>
+                    
+                    <div class="demo-schedule">
+                        <div class="demo-item">
+                            <div>
+                                <div class="demo-date">August 27, 2025</div>
+                                <div class="demo-school">University of Southern California (USC)</div>
+                            </div>
+                            <div class="demo-time">2:00 PM</div>
+                        </div>
+                        <div class="demo-item">
+                            <div>
+                                <div class="demo-date">Coming Soon</div>
+                                <div class="demo-school">Additional LA Campus Dates TBA</div>
+                            </div>
+                            <div class="demo-time">Stay Tuned</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <div class="cta-content">
+                    <div class="cta-title">Ready to Transform Your Campus?</div>
+                    <p style="font-size: 1.2em; margin-bottom: 25px;">
+                        <strong>Schedule your campus demonstration or book a personalized 1-on-1 session</strong><br>
+                        Connect with our Director of Education to experience the future of learning
+                    </p>
+                    
+                    <div class="cta-buttons">
+                        <a href="https://calendly.com/darrellwells222/30min" target="_blank" class="cta-button primary">
+                            📅 Schedule Your Demo
+                        </a>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSf1FdFr6-EvSSymNYoLCAz3gJDMc7s9Ax9_zOEUijokmGKqOg/viewform?usp=preview" target="_blank" class="cta-button">
+                            🎯 Sign Up for 1-on-1 Demo
+                        </a>
+                    </div>
+                    
+                    <p style="margin-top: 25px; font-size: 1.1em;">
+                        📧 education@soapboxvr.com | 📱 Contact via Calendly<br>
+                        🌐 Transform education through immersive technology
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="logo-section">
+                <div class="soapbox-logo">soapbox</div>
+                <span style="font-size: 2em;">📦</span>
+            </div>
+            <br>
+            Revolutionizing Education Through Immersive Celebrity Mentorship<br>
+            Follow us @SoapBoxVR for updates and educational insights
+        </div>
+    </div>
+</body>
+</html>
